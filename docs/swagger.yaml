@@ -1,0 +1,24 @@
+swagger: "2.0"
+info:
+  title: Tupsiregister
+  version: 1.0.0
+  description: Vali oma lemmik tups
+paths:
+  /tups:
+    get:
+      tags:
+        - tups
+      responses:
+        "200":
+          description: Returns a list of Tups
+          schema:
+            type: array
+            items:
+              type: string
+          examples:
+            application/json:
+              - Velo
+              - Killa
+              - Odens
+      summary: Get all the <tups> in API
+      description: Return all Tups that are registered in API
