@@ -10,13 +10,21 @@ const yamljs = require("yamljs");
 
 const swaggerDocument = yamljs.load("./docs/swagger.yaml");
 //const swaggerDocument = require("./docs/swagger.json");
+const { sync } = require("./db");
 
-app.get("/tups", (req, res) => {
-  res.send(["Velo", "Killa", "Odens"]);
-});
+//app.get("/tups", (req, res) => {
+//  res.send(["Velo", "Killa", "Odens"]);
+//});
 
+app.use(cors());
 app.use("/docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument));
+app.use(express.json());
 
-app.listen(port, () => {
-  console.log(`API on aadressil: http://localhost:${port}`);
+require("./routes/trRoutes.js")(app);
+
+app.listen(port, async () => {
+  if (process.env.SYNC === "true") {
+    await sync();
+  }
+  console.log(`API on aadressil: http://${host}:${port}`);
 });
