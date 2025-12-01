@@ -22,3 +22,22 @@ paths:
               - Odens
       summary: Get all the <tups> in API
       description: Return all Tups that are registered in API
+  "/tups/{TupsID}":
+    get:
+      responses:
+        "200": {}
+        "404":
+          schema:
+            $ref: "#/definitions/error"
+      summary: Get the full details of a Tups
+      description: Will return all details of a given <Tups> based on TupsID given.
+definitions:
+  error:
+    title: Root Type for error
+    description: ""
+    type: object
+    properties:
+      error:
+        type: string
+    example:
+      error: Error message
