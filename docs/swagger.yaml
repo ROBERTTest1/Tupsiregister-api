@@ -42,7 +42,7 @@ paths:
               Name: NewTupsName
               Description: NewTupsDescription
               Brand: NewTupsBrandName
-              Strength: Strength
+              Strength: "10"
         "400":
           description: "Missing some parameter, please review your request data"
           schema:
@@ -93,4 +93,4 @@ definitions:
       Name: NewTupsName
       Description: NewTupsDescription
       Brand: NewTupsBrandName
-      Strength: Strength
+      Strength: "10"
