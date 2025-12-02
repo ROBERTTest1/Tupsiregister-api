@@ -11,7 +11,7 @@ exports.getAll = async (req, res) => {
   );
 };
 exports.getByID = async (req, res) => {
-  const film = await getTups(req, res);
+  const tups = await getTups(req, res);
   if (!tups) {
     return res.status(404).send({ error: "Tups not found" });
   }
@@ -35,7 +35,7 @@ exports.create = async (req, res) => {
     Brand: req.body.Brand,
     Strength: req.body.Brand,
   };
-  const createdTups = await db.films.create(newTups);
+  const createdTups = await db.tups.create(newTups);
   return res
     .location(`${Utilities.getBaseURL(req)}/tups/${createdTups.TupsID}`)
     .sendStatus(201);
