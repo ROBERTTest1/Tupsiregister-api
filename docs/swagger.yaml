@@ -37,6 +37,12 @@ paths:
           description: Send 201 when <Tups> is successfully added to the database
           schema:
             $ref: "#/definitions/new-Tups"
+          examples:
+            application/json:
+              Name: NewTupsName
+              Description: NewTupsDescription
+              Brand: NewTupsBrandName
+              Strength: Strength
         "400":
           description: "Missing some parameter, please review your request data"
           schema:
@@ -45,6 +51,8 @@ paths:
       description: "Creates a new <Tups> instance with its required details, for further usage."
   "/tups/{TupsID}":
     get:
+      tags:
+        - Tups
       responses:
         "200": {}
         "404":
