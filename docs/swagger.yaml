@@ -20,8 +20,11 @@ paths:
               - Velo
               - Killa
               - Odens
+        "201": {}
       summary: Get all the <tups> in API
       description: Return all Tups that are registered in API
+    post:
+      description: "Creates a new <Tups> instance with its required details, for further usage."
   "/tups/{TupsID}":
     get:
       responses:
@@ -41,3 +44,27 @@ definitions:
         type: string
     example:
       error: Error message
+  new-Tups:
+    title: Root Type for new-Tups
+    description: ""
+    required:
+      - Brand
+      - Description
+      - Name
+      - Strength
+    type: object
+    properties:
+      Name:
+        type: string
+      Description:
+        type: string
+      Brand:
+        type: string
+      Strength:
+        format: float
+        type: number
+    example:
+      Name: NewTupsName
+      Description: NewTupsDescription
+      Brand: NewTupsBrandName
+      Strength: Strength

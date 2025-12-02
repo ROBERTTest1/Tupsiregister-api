@@ -18,6 +18,29 @@ exports.getByID = async (req, res) => {
   return res.status(200).send(tups);
 };
 
+exports.create = async (req, res) => {
+  if (
+    !req.body.Name ||
+    !req.body.Description ||
+    !req.body.Brand ||
+    !req.body.Strength
+  ) {
+    return res.status(400).send({
+      error: "Missing some parameter, please review your request data.",
+    });
+  }
+  const newTups = {
+    Name: req.body.Name,
+    Description: req.body.Description,
+    Brand: req.body.Brand,
+    Strength: req.body.Brand,
+  };
+  const createdTups = await db.films.create(newTups);
+  return res
+    .location(`${Utilities.getBaseURL(req)}/tups/${createdTups.TupsID}`)
+    .sendStatus(201);
+};
+
 const getTups = async (req, res) => {
   const idNumber = req.params.TupsID;
   console.log(idNumber);
