@@ -30,6 +30,7 @@ exports.create = async (req, res) => {
     });
   }
   const newTups = {
+    TupsID: UUID.v7(),
     Name: req.body.Name,
     Description: req.body.Description,
     Brand: req.body.Brand,

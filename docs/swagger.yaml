@@ -58,8 +58,15 @@ paths:
         "404":
           schema:
             $ref: "#/definitions/error"
+      operationId: TupsID
       summary: Get the full details of a Tups
       description: Will return all details of a given <Tups> based on TupsID given.
+    parameters:
+      - name: TupsID
+        description: ID of Tups
+        in: path
+        required: true
+        type: string
 definitions:
   error:
     title: Root Type for error
