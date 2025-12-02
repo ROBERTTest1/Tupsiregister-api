@@ -61,6 +61,33 @@ paths:
       operationId: TupsID
       summary: Get the full details of a Tups
       description: Will return all details of a given <Tups> based on TupsID given.
+    delete:
+      tags:
+        - Tups
+      parameters:
+        - name: body
+          description: ID of <Tups> to be removed from the app
+          schema:
+            $ref: "#/definitions/delete-Tups"
+          in: body
+          required: true
+      responses:
+        "204":
+          description: Returns  "No content" when removal of <Tups> is sucess
+          schema:
+            $ref: "#/definitions/error"
+          examples:
+            application/json:
+              - error: No Content
+        "404":
+          description: "Returns error, when <Tups> with specified ID does not exist"
+          schema:
+            $ref: "#/definitions/error"
+          examples:
+            application/json:
+              - error: ID not found
+      summary: Delete a <Tups> from the app
+      description: Deletes an entry from the app
     parameters:
       - name: TupsID
         description: ID of Tups
@@ -101,3 +128,12 @@ definitions:
       Description: NewTupsDescription
       Brand: NewTupsBrandName
       Strength: "10"
+  delete-Tups:
+    title: Root Type for delete-Tups
+    description: ""
+    type: object
+    properties:
+      TupsID:
+        type: string
+    example:
+      TupsID: 5f9b9e90-cec3-11f0-b43f-901b0eec5991
