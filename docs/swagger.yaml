@@ -7,7 +7,7 @@ paths:
   /tups:
     get:
       tags:
-        - tups
+        - Tups
       responses:
         "200":
           description: Returns a list of Tups
@@ -20,10 +20,28 @@ paths:
               - Velo
               - Killa
               - Odens
-        "201": {}
       summary: Get all the <tups> in API
       description: Return all Tups that are registered in API
     post:
+      tags:
+        - Tups
+      parameters:
+        - name: body
+          description: The <Tups> that is to be created.
+          schema:
+            $ref: "#/definitions/new-Tups"
+          in: body
+          required: true
+      responses:
+        "201":
+          description: Send 201 when <Tups> is successfully added to the database
+          schema:
+            $ref: "#/definitions/new-Tups"
+        "400":
+          description: "Missing some parameter, please review your request data"
+          schema:
+            $ref: "#/definitions/error"
+      summary: Create a new <Tups> into the app
       description: "Creates a new <Tups> instance with its required details, for further usage."
   "/tups/{TupsID}":
     get:
