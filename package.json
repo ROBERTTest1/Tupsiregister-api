@@ -20,6 +20,8 @@
   },
   "homepage": "https://github.com/ROBERTTest1/Tupsiregister-api#readme",
   "dependencies": {
-    "concurrently": "^9.2.1"
-  }
+    "concurrently": "^9.2.1",
+    "nodemon": "^3.1.11"
+  },
+  "devDependencies": {}
 }
