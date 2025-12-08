@@ -1,22 +1,25 @@
 {
   "name": "tupsiregister-api",
   "version": "1.0.0",
-  "description": "",
+  "description": "API ja veebisait erinevate snuside vaatamiseks\r -------------\r # How to run this app",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "concurrently \"cd backend-api && nodemon ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ROBERTTest1/Tupsiregister-api.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/ROBERTTest1/Tupsiregister-api/issues"
+  },
+  "homepage": "https://github.com/ROBERTTest1/Tupsiregister-api#readme",
   "dependencies": {
-    "cors": "^2.8.5",
-    "dotenv": "^17.2.3",
-    "express": "^5.1.0",
-    "mariadb": "^3.4.5",
-    "nodemon": "^3.1.11",
-    "sequelize": "^6.37.7",
-    "swagger-ui-express": "^5.0.1",
-    "yamljs": "^0.3.0"
+    "concurrently": "^9.2.1"
   }
 }

@@ -42,6 +42,15 @@ exports.create = async (req, res) => {
     .sendStatus(201);
 };
 
+exports.deleteByID = async (req, res) => {
+  const tupsToBeDeleted = await getTups(req, res);
+  if (!tupsToBeDeleted) {
+    return;
+  }
+  await tupsToBeDeleted.destroy();
+  res.status(204).send({ error: "No Content" });
+};
+
 const getTups = async (req, res) => {
   const idNumber = req.params.TupsID;
   console.log(idNumber);
