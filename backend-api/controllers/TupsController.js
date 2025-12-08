@@ -70,6 +70,32 @@ exports.deleteByID = async (req, res) => {
   }
 };
 
+exports.modifyById = async (req, res) => {
+  const tupsToBeChanged = await getTups(req, res);
+  if (!tupsToBeChanged) {
+    return;
+  }
+  if (
+    !req.body.Name ||
+    !req.body.Description ||
+    !req.body.Brand ||
+    !req.body.Strength
+  ) {
+    return res.status(400).send({
+      error: "Missing some parameter, please review your request data.",
+    });
+  }
+  tupsToBeChanged.Name = req.body.Name;
+  tupsToBeChanged.NameDescription = req.body.Description;
+  tupsToBeChanged.NameBrand = req.body.Brand;
+  tupsToBeChanged.NameStrength = req.body.Strength;
+  await tupsToBeChanged.save();
+  return res
+    .location(`${Utilities.getBaseURL(req)}/tups/${tupsToBeChanged.TupsID}`)
+    .sendStatus(201)
+    .send(tupsToBeChanged);
+};
+
 // --------------------------- HELPER FUNCTION ---------------------------
 const getTups = async (req, res) => {
   try {

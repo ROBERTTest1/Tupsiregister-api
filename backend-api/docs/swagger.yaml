@@ -61,6 +61,41 @@ paths:
       operationId: TupsID
       summary: Get the full details of a Tups
       description: Will return all details of a given <Tups> based on TupsID given.
+    put:
+      tags:
+        - Tups
+      parameters:
+        - name: body
+          description: Contains new data to be changed in the specified Tups
+          schema:
+            $ref: "#/definitions/new-Tups"
+          in: body
+          required: true
+      responses:
+        "201":
+          description: Returns 201 upon successful modification of Tups
+          schema:
+            $ref: "#/definitions/new-Tups"
+          examples:
+            application/json:
+              - Name: ""
+                Description: 5u
+                Brand: ""
+                Strength: 89.18
+        "400":
+          description: Returns 400 when one or multiple required parmeters are missing
+          schema:
+            $ref: "#/definitions/error"
+          examples:
+            application/json:
+              - error: "cannot change info, because some parameter missing."
+        "404":
+          description: "Returns 404 when Tups that is to be modified, is not found by the given TupsID"
+          schema:
+            $ref: "#/definitions/error"
+          examples:
+            application/json:
+              - error: Tups not found
     delete:
       tags:
         - Tups
