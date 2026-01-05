@@ -1,183 +1,174 @@
-swagger: '2.0'
+swagger: "2.0"
 info:
-    title: Rostercontrol
-    version: 1.0.0
-    description: Vali oma lemmik töötaja
+  title: Rostercontrol
+  version: 1.0.0
+  description: Vali oma lemmik töötaja
 paths:
-    /worker:
-        get:
-            tags:
-                - Worker
-            responses:
-                '200':
-                    description: Returns a list of Workers
-                    schema:
-                        type: array
-                        items:
-                            type: string
-                    examples:
-                        application/json:
-                            - Maria
-                            - Sharia
-                            - Daria
-            summary: Get all the <workers> in API
-            description: Return all Workers that are registered in API
-        post:
-            tags:
-                - Worker
-            parameters:
-                -
-                    name: body
-                    description: The <Worker> that is to be created.
-                    schema:
-                        $ref: '#/definitions/new-Worker'
-                    in: body
-                    required: true
-            responses:
-                '201':
-                    description: Send 201 when <Worker> is successfully added to the database
-                    schema:
-                        $ref: '#/definitions/new-Worker'
-                    examples:
-                        application/json:
-                            FirstName: NewFirstName
-                            LastName: NewLastName
-                            Workload: NewWorkload
-                            IsActive: NewIsActive
-                '400':
-                    description: 'Missing some parameter, please review your request data'
-                    schema:
-                        $ref: '#/definitions/error'
-            summary: Create a new <Worker> into the app
-            description: 'Creates a new <Worker> instance with its required details, for further usage.'
-    '/worker/{WorkerID}':
-        get:
-            tags:
-                - Worker
-            responses:
-                '200': {}
-                '404':
-                    schema:
-                        $ref: '#/definitions/error'
-            operationId: WorkerID
-            summary: Get the full details of a Worker
-            description: Will return all details of a given <Worker> based on WorkerID given.
-        put:
-            tags:
-                - Worker
-            parameters:
-                -
-                    name: body
-                    description: Contains new data to be changed in the specified Worker
-                    schema:
-                        $ref: '#/definitions/new-Worker'
-                    in: body
-                    required: true
-            responses:
-                '201':
-                    description: |
-                        Returns 201 upon successful modification of Worker
-                    schema:
-                        $ref: '#/definitions/new-Worker'
-                    examples:
-                        application/json:
-                            -
-                                FirstName: ''
-                                LastName: ''
-                                Workload: ''
-                                IsActive: ''
-                '400':
-                    description: Returns 400 when one or multiple required parmeters are missing
-                    schema:
-                        $ref: '#/definitions/error'
-                    examples:
-                        application/json:
-                            -
-                                error: 'cannot change info, because some parameter missing.'
-                '404':
-                    description: 'Returns 404 when Worker that is to be modified, is not found by the given WorkerID'
-                    schema:
-                        $ref: '#/definitions/error'
-                    examples:
-                        application/json:
-                            -
-                                error: Worker not found
-        delete:
-            tags:
-                - Worker
-            parameters:
-                -
-                    name: body
-                    description: ID of <Worker> to be removed from the app
-                    schema:
-                        $ref: '#/definitions/delete-Worker'
-                    in: body
-                    required: true
-            responses:
-                '204':
-                    description: Returns  "No content" when removal of <Worker> is sucess
-                    schema:
-                        $ref: '#/definitions/error'
-                    examples:
-                        application/json:
-                            -
-                                error: No Content
-                '404':
-                    description: 'Returns error, when <Worker> with specified ID does not exist'
-                    schema:
-                        $ref: '#/definitions/error'
-                    examples:
-                        application/json:
-                            -
-                                error: ID not found
-            summary: Delete a <Worker> from the app
-            description: Deletes an entry from the app
-        parameters:
-            -
-                name: WorkerID
-                description: ID of Worker
-                in: path
-                required: true
-                type: string
+  /worker:
+    get:
+      tags:
+        - Worker
+      responses:
+        "200":
+          description: Returns a list of Workers
+          schema:
+            type: array
+            items:
+              type: string
+          examples:
+            application/json:
+              - Maria
+              - Sharia
+              - Daria
+      summary: Get all the <workers> in API
+      description: Return all Workers that are registered in API
+    post:
+      tags:
+        - Worker
+      parameters:
+        - name: body
+          description: The <Worker> that is to be created.
+          schema:
+            $ref: "#/definitions/new-Worker"
+          in: body
+          required: true
+      responses:
+        "201":
+          description: Send 201 when <Worker> is successfully added to the database
+          schema:
+            $ref: "#/definitions/new-Worker"
+          examples:
+            application/json:
+              FirstName: NewFirstName
+              LastName: NewLastName
+              Workload: NewWorkload
+              IsActive: NewIsActive
+        "400":
+          description: "Missing some parameter, please review your request data"
+          schema:
+            $ref: "#/definitions/error"
+      summary: Create a new <Worker> into the app
+      description: "Creates a new <Worker> instance with its required details, for further usage."
+  "/worker/{WorkerID}":
+    get:
+      tags:
+        - Worker
+      responses:
+        "200": {}
+        "404":
+          schema:
+            $ref: "#/definitions/error"
+      operationId: WorkerID
+      summary: Get the full details of a Worker
+      description: Will return all details of a given <Worker> based on WorkerID given.
+    put:
+      tags:
+        - Worker
+      parameters:
+        - name: body
+          description: Contains new data to be changed in the specified Worker
+          schema:
+            $ref: "#/definitions/new-Worker"
+          in: body
+          required: true
+      responses:
+        "201":
+          description: |
+            Returns 201 upon successful modification of Worker
+          schema:
+            $ref: "#/definitions/new-Worker"
+          examples:
+            application/json:
+              - FirstName: ""
+                LastName: ""
+                Workload: ""
+                IsActive: ""
+        "400":
+          description: Returns 400 when one or multiple required parmeters are missing
+          schema:
+            $ref: "#/definitions/error"
+          examples:
+            application/json:
+              - error: "cannot change info, because some parameter missing."
+        "404":
+          description: "Returns 404 when Worker that is to be modified, is not found by the given WorkerID"
+          schema:
+            $ref: "#/definitions/error"
+          examples:
+            application/json:
+              - error: Worker not found
+    delete:
+      tags:
+        - Worker
+      parameters:
+        - name: body
+          description: ID of <Worker> to be removed from the app
+          schema:
+            $ref: "#/definitions/delete-Worker"
+          in: body
+          required: true
+      responses:
+        "204":
+          description: Returns  "No content" when removal of <Worker> is sucess
+          schema:
+            $ref: "#/definitions/error"
+          examples:
+            application/json:
+              - error: No Content
+        "404":
+          description: "Returns error, when <Worker> with specified ID does not exist"
+          schema:
+            $ref: "#/definitions/error"
+          examples:
+            application/json:
+              - error: ID not found
+      summary: Delete a <Worker> from the app
+      description: Deletes an entry from the app
+    parameters:
+      - name: WorkerID
+        description: ID of Worker
+        in: path
+        required: true
+        type: string
 definitions:
-    error:
-        title: Root Type for error
-        description: ''
-        type: object
-        properties:
-            error:
-                type: string
-        example:
-            error: Error message
-    delete-Worker:
-        title: Root Type for delete-Worker
-        description: ''
-        type: object
-        properties:
-            WorkerID:
-                type: string
-        example:
-            WorkerID: 5f9b9e90-cec3-11f0-b43f-901b0eec5991
-    new-Worker:
-        title: Root Type for new-Worker
-        description: ''
-        required:
-            - FirstName
-            - LastName
-            - Workload
-            - IsActive
-        type: object
-        properties:
-            FirstName:
-                type: string
-            LastName:
-                type: string
-            Workload:
-                type: string
-            IsActive:
-                type: string
-        example:
-            FirsName: NewFirstName
-            LastName: NewLastName
-            Workload: NewWorkload
-            IsActive: NewIsActive
+  error:
+    title: Root Type for error
+    description: ""
+    type: object
+    properties:
+      error:
+        type: string
+    example:
+      error: Error message
+  delete-Worker:
+    title: Root Type for delete-Worker
+    description: ""
+    type: object
+    properties:
+      WorkerID:
+        type: string
+    example:
+      WorkerID: 5f9b9e90-cec3-11f0-b43f-901b0eec5991
+  new-Worker:
+    title: Root Type for new-Worker
+    description: ""
+    required:
+      - FirstName
+      - LastName
+      - Workload
+      - IsActive
+    type: object
+    properties:
+      FirstName:
+        type: string
+      LastName:
+        type: string
+      Workload:
+        type: string
+      IsActive:
+        type: string
+    example:
+      FirsName: NewFirstName
+      LastName: NewLastName
+      Workload: NewWorkload
+      IsActive: NewIsActive
