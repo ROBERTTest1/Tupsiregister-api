@@ -4,39 +4,39 @@ info:
   version: 1.0.0
   description: Vali oma lemmik tups
 paths:
-  /tups:
+  /worker:
     get:
       tags:
-        - Tups
+        - Worker
       responses:
         "200":
-          description: Returns a list of Tups
+          description: Returns a list of Workers
           schema:
             type: array
             items:
               type: string
           examples:
             application/json:
-              - Velo
-              - Killa
-              - Odens
-      summary: Get all the <tups> in API
-      description: Return all Tups that are registered in API
+              - Maria
+              - Sharia
+              - Daria
+      summary: Get all the <workers> in API
+      description: Return all Workers that are registered in API
     post:
       tags:
-        - Tups
+        - Worker
       parameters:
         - name: body
-          description: The <Tups> that is to be created.
+          description: The <Worker> that is to be created.
           schema:
-            $ref: "#/definitions/new-Tups"
+            $ref: "#/definitions/new-Worker"
           in: body
           required: true
       responses:
         "201":
           description: Send 201 when <Tups> is successfully added to the database
           schema:
-            $ref: "#/definitions/new-Tups"
+            $ref: "#/definitions/new-Worker"
           examples:
             application/json:
               Name: NewTupsName
@@ -47,35 +47,36 @@ paths:
           description: "Missing some parameter, please review your request data"
           schema:
             $ref: "#/definitions/error"
-      summary: Create a new <Tups> into the app
-      description: "Creates a new <Tups> instance with its required details, for further usage."
-  "/tups/{TupsID}":
+      summary: Create a new <Worker> into the app
+      description: "Creates a new <Worker> instance with its required details, for further usage."
+  "/worker/{WorkerID}":
     get:
       tags:
-        - Tups
+        - Worker
       responses:
         "200": {}
         "404":
           schema:
             $ref: "#/definitions/error"
-      operationId: TupsID
-      summary: Get the full details of a Tups
-      description: Will return all details of a given <Tups> based on TupsID given.
+      operationId: WorkerID
+      summary: Get the full details of a Worker
+      description: Will return all details of a given <Worker> based on WorkerID given.
     put:
       tags:
-        - Tups
+        - Worker
       parameters:
         - name: body
           description: Contains new data to be changed in the specified Tups
           schema:
-            $ref: "#/definitions/new-Tups"
+            $ref: "#/definitions/new-Worker"
           in: body
           required: true
       responses:
         "201":
-          description: Returns 201 upon successful modification of Tups
+          description: |
+            Returns 201 upon successful modification of Worker
           schema:
-            $ref: "#/definitions/new-Tups"
+            $ref: "#/definitions/new-Worker"
           examples:
             application/json:
               - Name: ""
@@ -95,37 +96,37 @@ paths:
             $ref: "#/definitions/error"
           examples:
             application/json:
-              - error: Tups not found
+              - error: Worker not found
     delete:
       tags:
-        - Tups
+        - Worker
       parameters:
         - name: body
-          description: ID of <Tups> to be removed from the app
+          description: ID of <Worker> to be removed from the app
           schema:
-            $ref: "#/definitions/delete-Tups"
+            $ref: "#/definitions/delete-Worker"
           in: body
           required: true
       responses:
         "204":
-          description: Returns  "No content" when removal of <Tups> is sucess
+          description: Returns  "No content" when removal of <Worker> is sucess
           schema:
             $ref: "#/definitions/error"
           examples:
             application/json:
               - error: No Content
         "404":
-          description: "Returns error, when <Tups> with specified ID does not exist"
+          description: "Returns error, when <Worker> with specified ID does not exist"
           schema:
             $ref: "#/definitions/error"
           examples:
             application/json:
               - error: ID not found
-      summary: Delete a <Tups> from the app
+      summary: Delete a <Worker> from the app
       description: Deletes an entry from the app
     parameters:
-      - name: TupsID
-        description: ID of Tups
+      - name: WorkerID
+        description: ID of Worker
         in: path
         required: true
         type: string
@@ -139,8 +140,17 @@ definitions:
         type: string
     example:
       error: Error message
-  new-Tups:
-    title: Root Type for new-Tups
+  delete-Worker:
+    title: Root Type for delete-Worker
+    description: ""
+    type: object
+    properties:
+      WorkerID:
+        type: string
+    example:
+      WorkerID: 5f9b9e90-cec3-11f0-b43f-901b0eec5991
+  new-Worker:
+    title: Root Type for new-Worker
     description: ""
     required:
       - Brand
@@ -163,12 +173,3 @@ definitions:
       Description: NewTupsDescription
       Brand: NewTupsBrandName
       Strength: "10"
-  delete-Tups:
-    title: Root Type for delete-Tups
-    description: ""
-    type: object
-    properties:
-      TupsID:
-        type: string
-    example:
-      TupsID: 5f9b9e90-cec3-11f0-b43f-901b0eec5991
