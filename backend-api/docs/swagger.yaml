@@ -168,7 +168,7 @@ definitions:
       IsActive:
         type: string
     example:
-      FirsName: NewFirstName
+      FirstName: NewFirstName
       LastName: NewLastName
       Workload: NewWorkload
       IsActive: NewIsActive
