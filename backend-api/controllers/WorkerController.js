@@ -7,10 +7,12 @@ exports.getAll = async (req, res) => {
   try {
     const worker = await db.worker.findAll();
     res.status(200).send(
-      worker.map(({ WorkerID, Name, Brand }) => ({
+      worker.map(({ WorkerID, FirstName, LastName, Workload, IsActive }) => ({
         WorkerID,
-        Name,
-        Brand,
+        FirstName,
+        LastName,
+        Workload,
+        IsActive,
       }))
     );
   } catch (error) {
@@ -29,9 +31,9 @@ exports.getByID = async (req, res) => {
 // --------------------------- CREATE ---------------------------
 exports.create = async (req, res) => {
   try {
-    const { Name, Description, Brand, Strength } = req.body;
+    const { FirstName, LastName, Workload, IsActive } = req.body;
 
-    if (!Name || !Description || !Brand || !Strength) {
+    if (!FirstName || !LastName || !Workload || !IsActive) {
       return res.status(400).send({
         error: "Missing some parameter, please review your request data.",
       });
@@ -39,10 +41,10 @@ exports.create = async (req, res) => {
 
     const newWorker = {
       WorkerID: uuidv7(),
-      Name,
-      Description,
-      Brand,
-      Strength,
+      FirstName,
+      LastName,
+      Workload,
+      IsActive,
     };
 
     const createdWorker = await db.worker.create(newWorker);
@@ -76,19 +78,19 @@ exports.modifyById = async (req, res) => {
     return;
   }
   if (
-    !req.body.Name ||
-    !req.body.Description ||
-    !req.body.Brand ||
-    !req.body.Strength
+    !req.body.FirstName ||
+    !req.body.LastName ||
+    !req.body.Workload ||
+    !req.body.IsActive
   ) {
     return res.status(400).send({
       error: "Missing some parameter, please review your request data.",
     });
   }
-  workerToBeChanged.Name = req.body.Name;
-  workerToBeChanged.NameDescription = req.body.Description;
-  workerToBeChanged.NameBrand = req.body.Brand;
-  workerToBeChanged.NameStrength = req.body.Strength;
+  workerToBeChanged.FirstName = req.body.FirstName;
+  workerToBeChanged.LastName = req.body.LastName;
+  workerToBeChanged.Workload = req.body.Workload;
+  workerToBeChanged.IsActive = req.body.IsActive;
   await workerToBeChanged.save();
   return res
     .location(
