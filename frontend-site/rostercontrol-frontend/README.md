@@ -1,4 +1,4 @@
-# tupsiregister-frontend
+# rostercontrol-frontend
 
 ## Project setup
 ```
