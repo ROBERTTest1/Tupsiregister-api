@@ -20,7 +20,7 @@ app.use(cors());
 app.use("/docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 app.use(express.json());
 
-require("./routes/trRoutes.js")(app);
+require("./routes/rcRoutes.js")(app);
 
 app.listen(port, async () => {
   if (process.env.SYNC === "true") {

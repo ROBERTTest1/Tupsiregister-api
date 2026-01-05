@@ -74,7 +74,8 @@
     "yargs-parser": "^21.1.1"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "concurrently \"cd backend-api && nodemon .\"\"cd frontend-site\\rostercontrol-frontend && npm run serve\""
   },
   "repository": {
     "type": "git",
