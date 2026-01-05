@@ -5,20 +5,20 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       defaultValue: DataTypes.UUID,
     },
-    Name: {
+    FirstName: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    Description: {
+    LastName: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    Brand: {
+    Workload: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    Strength: {
-      type: DataTypes.DECIMAL,
+    IsActive: {
+      type: DataTypes.STRING,
       allowNull: false,
     },
   });
