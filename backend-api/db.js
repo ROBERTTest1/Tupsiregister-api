@@ -23,7 +23,7 @@ async () => {
 const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
-db.tups = require("./models/Tups.js")(sequelize, DataTypes);
+db.worker = require("./models/Worker.js")(sequelize, DataTypes);
 
 const sync = async () => {
   await sequelize.sync({ alter: true });

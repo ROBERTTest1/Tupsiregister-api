@@ -5,25 +5,25 @@ const { uuidv7 } = require("uuidv7"); // UUID v7 generaator
 // --------------------------- GET ALL ---------------------------
 exports.getAll = async (req, res) => {
   try {
-    const tups = await db.tups.findAll();
+    const worker = await db.worker.findAll();
     res.status(200).send(
-      tups.map(({ TupsID, Name, Brand }) => ({
-        TupsID,
+      worker.map(({ WorkerID, Name, Brand }) => ({
+        WorkerID,
         Name,
         Brand,
       }))
     );
   } catch (error) {
     console.error("Error in getAll:", error);
-    res.status(500).send({ error: "Server error fetching Tups list." });
+    res.status(500).send({ error: "Server error fetching Worker list." });
   }
 };
 
 // --------------------------- GET BY ID ---------------------------
 exports.getByID = async (req, res) => {
-  const tups = await getTups(req, res);
-  if (!tups) return; // getTups already sent response
-  res.status(200).send(tups);
+  const worker = await getWorker(req, res);
+  if (!worker) return; // getWorker already sent response
+  res.status(200).send(worker);
 };
 
 // --------------------------- CREATE ---------------------------
@@ -37,42 +37,42 @@ exports.create = async (req, res) => {
       });
     }
 
-    const newTups = {
-      TupsID: uuidv7(),
+    const newWorker = {
+      WorkerID: uuidv7(),
       Name,
       Description,
       Brand,
       Strength,
     };
 
-    const createdTups = await db.tups.create(newTups);
+    const createdWorker = await db.worker.create(newWorker);
 
     return res
-      .location(`${Utilities.getBaseURL(req)}/tups/${createdTups.TupsID}`)
+      .location(`${Utilities.getBaseURL(req)}/worker/${createdWorker.WorkerID}`)
       .sendStatus(201);
   } catch (error) {
     console.error("Error in create:", error);
-    res.status(500).send({ error: "Server error creating Tups." });
+    res.status(500).send({ error: "Server error creating Worker." });
   }
 };
 
 // --------------------------- DELETE ---------------------------
 exports.deleteByID = async (req, res) => {
   try {
-    const tupsToBeDeleted = await getTups(req, res);
-    if (!tupsToBeDeleted) return; // getTups already handled 404
+    const workerToBeDeleted = await getWorker(req, res);
+    if (!workerToBeDeleted) return; // getWorker already handled 404
 
-    await tupsToBeDeleted.destroy();
+    await workerToBeDeleted.destroy();
     return res.sendStatus(204); // No Content (must not include body)
   } catch (error) {
     console.error("Error in deleteByID:", error);
-    res.status(500).send({ error: "Server error deleting Tups." });
+    res.status(500).send({ error: "Server error deleting Worker." });
   }
 };
 
 exports.modifyById = async (req, res) => {
-  const tupsToBeChanged = await getTups(req, res);
-  if (!tupsToBeChanged) {
+  const workerToBeChanged = await getWorker(req, res);
+  if (!workerToBeChanged) {
     return;
   }
   if (
@@ -85,33 +85,35 @@ exports.modifyById = async (req, res) => {
       error: "Missing some parameter, please review your request data.",
     });
   }
-  tupsToBeChanged.Name = req.body.Name;
-  tupsToBeChanged.NameDescription = req.body.Description;
-  tupsToBeChanged.NameBrand = req.body.Brand;
-  tupsToBeChanged.NameStrength = req.body.Strength;
-  await tupsToBeChanged.save();
+  workerToBeChanged.Name = req.body.Name;
+  workerToBeChanged.NameDescription = req.body.Description;
+  workerToBeChanged.NameBrand = req.body.Brand;
+  workerToBeChanged.NameStrength = req.body.Strength;
+  await workerToBeChanged.save();
   return res
-    .location(`${Utilities.getBaseURL(req)}/tups/${tupsToBeChanged.TupsID}`)
+    .location(
+      `${Utilities.getBaseURL(req)}/worker/${workerToBeChanged.WorkerID}`
+    )
     .sendStatus(201)
-    .send(tupsToBeChanged);
+    .send(workerToBeChanged);
 };
 
 // --------------------------- HELPER FUNCTION ---------------------------
-const getTups = async (req, res) => {
+const getWorker = async (req, res) => {
   try {
-    const id = req.params.TupsID;
+    const id = req.params.WorkerID;
 
-    const tups = await db.tups.findByPk(id);
+    const worker = await db.worker.findByPk(id);
 
-    if (!tups) {
-      res.status(404).send({ error: `Tups with ID ${id} was not found.` });
+    if (!worker) {
+      res.status(404).send({ error: `Worker with ID ${id} was not found.` });
       return null;
     }
 
-    return tups;
+    return worker;
   } catch (err) {
-    console.error("Error in getTups:", err);
-    res.status(500).send({ error: "Server error fetching Tups." });
+    console.error("Error in getWorker:", err);
+    res.status(500).send({ error: "Server error fetching Worker." });
     return null;
   }
 };

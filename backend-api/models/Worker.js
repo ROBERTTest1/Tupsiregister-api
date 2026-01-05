@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
-  const Tups = sequelize.define("Tups", {
-    TupsID: {
+  const Worker = sequelize.define("Worker", {
+    WorkerID: {
       type: DataTypes.UUID,
       primaryKey: true,
       defaultValue: DataTypes.UUID,
@@ -22,6 +22,6 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
   });
-  console.log(Tups === sequelize.models.Tups);
-  return Tups;
+  console.log(Worker === sequelize.models.Worker);
+  return Worker;
 };

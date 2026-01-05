@@ -12,7 +12,7 @@ const swaggerDocument = yamljs.load("./docs/swagger.yaml");
 //const swaggerDocument = require("./docs/swagger.json");
 const { sync } = require("./db");
 
-//app.get("/tups", (req, res) => {
+//app.get("/worker", (req, res) => {
 //  res.send(["Velo", "Killa", "Odens"]);
 //});
 
