@@ -3,7 +3,7 @@ module.exports = (sequelize, DataTypes) => {
     WorkerID: {
       type: DataTypes.UUID,
       primaryKey: true,
-      defaultValue: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
     },
     FirstName: {
       type: DataTypes.STRING,

@@ -11,7 +11,7 @@ const sequelize = new Sequelize(
   }
 );
 
-async () => {
+const testConnection = async () => {
   try {
     await sequelize.authenticate();
     console.log("Connection has been established successfully!");
@@ -36,8 +36,12 @@ db.worker.belongsToMany(db.schedule, { through: db.shift, as: "WorkerShifts" });
 db.schedule.belongsToMany(db.worker, { through: db.shift });
 
 const sync = async () => {
-  await sequelize.sync({ alter: true });
-  console.log("DB sync has been completed");
+  try {
+    await sequelize.sync();
+    console.log("Database sync has been completed");
+  } catch (err) {
+    console.error("Database sync failed:", err);
+  }
 };
 
-module.exports = { db, sync };
+module.exports = { db, sync, testConnection };
