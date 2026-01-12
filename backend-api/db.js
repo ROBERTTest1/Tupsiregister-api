@@ -25,6 +25,9 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 db.worker = require("./models/Worker.js")(sequelize, DataTypes);
 
+db.worker.belongsToMany(db.schedule, { through: db.shift, as: "WorkerShifts" });
+db.schedule.belongsToMany(db.worker, { through: db.shift });
+
 const sync = async () => {
   await sequelize.sync({ alter: true });
   console.log("DB sync has been completed");
