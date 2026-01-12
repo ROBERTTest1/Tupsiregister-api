@@ -32,35 +32,7 @@ exports.getByID = async (req, res) => {
 };
 
 // --------------------------- CREATE ---------------------------
-exports.create = async (req, res) => {
-  try {
-    const { FirstName, LastName, Workload, IsActive, RoleName } = req.body;
 
-    if (!FirstName || !LastName || !Workload || !IsActive || !RoleName) {
-      return res.status(400).send({
-        error: "Missing some parameter, please review your request data.",
-      });
-    }
-
-    const newWorker = {
-      WorkerID: uuidv7(),
-      FirstName,
-      LastName,
-      Workload,
-      IsActive,
-      RoleName,
-    };
-
-    const createdWorker = await db.worker.create(newWorker);
-
-    return res
-      .location(`${Utilities.getBaseURL(req)}/worker/${createdWorker.WorkerID}`)
-      .sendStatus(201);
-  } catch (error) {
-    console.error("Error in create:", error);
-    res.status(500).send({ error: "Server error creating Worker." });
-  }
-};
 
 // --------------------------- DELETE ---------------------------
 exports.deleteByID = async (req, res) => {
