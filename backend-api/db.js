@@ -24,6 +24,13 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 db.worker = require("./models/Worker.js")(sequelize, DataTypes);
+db.schedule = require("./models/Schedule.js")(sequelize, DataTypes);
+db.shift = require("./models/Shift.js")(
+  sequelize,
+  DataTypes,
+  db.worker,
+  db.schedule
+);
 
 db.worker.belongsToMany(db.schedule, { through: db.shift, as: "WorkerShifts" });
 db.schedule.belongsToMany(db.worker, { through: db.shift });
