@@ -8,8 +8,12 @@ exports.getAll = async (req, res) => {
     // Tavaliselt tahad vahetusi nähes teada ka töötaja nime
     const shifts = await db.shifts.findAll({
       include: [
-        { model: db.workers, as: "worker", attributes: ["FirstName", "LastName"] }
-      ]
+        {
+          model: db.workers,
+          as: "worker",
+          attributes: ["FirstName", "LastName"],
+        },
+      ],
     });
     res.status(200).send(shifts);
   } catch (error) {
@@ -26,14 +30,15 @@ exports.create = async (req, res) => {
     // Kontrollime, et kõik vajalikud väljad on olemas
     if (!WorkerID || !ScheduleID || !ShiftDate || !StartTime || !EndTime) {
       return res.status(400).send({
-        error: "Missing parameters. WorkerID, ScheduleID, Date and Times are required.",
+        error:
+          "Missing parameters. WorkerID, ScheduleID, Date and Times are required.",
       });
     }
 
     const newShift = {
       ShiftID: uuidv7(),
-      WorkerID,
-      ScheduleID,
+      WorkerWorkerID,
+      ScheduleScheduleID,
       ShiftDate,
       StartTime,
       EndTime,
@@ -76,7 +81,7 @@ const getShift = async (req, res) => {
   try {
     const id = req.params.ShiftID;
     const shift = await db.shifts.findByPk(id, {
-        include: ["worker"] // Võtab kaasa töötaja andmed
+      include: ["worker"], // Võtab kaasa töötaja andmed
     });
 
     if (!shift) {
