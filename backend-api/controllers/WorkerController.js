@@ -7,13 +7,16 @@ exports.getAll = async (req, res) => {
   try {
     const worker = await db.worker.findAll();
     res.status(200).send(
-      worker.map(({ WorkerID, FirstName, LastName, Workload, IsActive }) => ({
-        WorkerID,
-        FirstName,
-        LastName,
-        Workload,
-        IsActive,
-      }))
+      worker.map(
+        ({ WorkerID, FirstName, LastName, Workload, IsActive, RoleName }) => ({
+          WorkerID,
+          FirstName,
+          LastName,
+          Workload,
+          IsActive,
+          RoleName,
+        })
+      )
     );
   } catch (error) {
     console.error("Error in getAll:", error);
@@ -31,9 +34,9 @@ exports.getByID = async (req, res) => {
 // --------------------------- CREATE ---------------------------
 exports.create = async (req, res) => {
   try {
-    const { FirstName, LastName, Workload, IsActive } = req.body;
+    const { FirstName, LastName, Workload, IsActive, RoleName } = req.body;
 
-    if (!FirstName || !LastName || !Workload || !IsActive) {
+    if (!FirstName || !LastName || !Workload || !IsActive || !RoleName) {
       return res.status(400).send({
         error: "Missing some parameter, please review your request data.",
       });
@@ -45,6 +48,7 @@ exports.create = async (req, res) => {
       LastName,
       Workload,
       IsActive,
+      RoleName,
     };
 
     const createdWorker = await db.worker.create(newWorker);
@@ -81,7 +85,8 @@ exports.modifyById = async (req, res) => {
     !req.body.FirstName ||
     !req.body.LastName ||
     !req.body.Workload ||
-    !req.body.IsActive
+    !req.body.IsActive ||
+    !req.body.RoleName
   ) {
     return res.status(400).send({
       error: "Missing some parameter, please review your request data.",
@@ -91,6 +96,7 @@ exports.modifyById = async (req, res) => {
   workerToBeChanged.LastName = req.body.LastName;
   workerToBeChanged.Workload = req.body.Workload;
   workerToBeChanged.IsActive = req.body.IsActive;
+  workerToBeChanged.RoleName = req.body.RoleName;
   await workerToBeChanged.save();
   return res
     .location(

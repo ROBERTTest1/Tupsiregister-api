@@ -21,6 +21,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    RoleName: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
   });
   console.log(Worker === sequelize.models.Worker);
   return Worker;
