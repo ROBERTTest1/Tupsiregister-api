@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       defaultValue: DataTypes.UUID,
     },
-    Name: {
+    ScheduleName: {
       type: DataTypes.STRING,
       allowNull: false,
     },

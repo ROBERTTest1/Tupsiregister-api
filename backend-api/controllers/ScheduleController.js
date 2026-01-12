@@ -5,10 +5,10 @@ const { uuidv7 } = require("uuidv7"); // UUID v7 generaator
 // --------------------------- GET ALL ---------------------------
 exports.getAll = async (req, res) => {
   try {
-    const schedules = await db.schedules.findAll();
-    res.status(200).send(schedules);
+    const schedule = await db.schedule.findAll();
+    res.status(200).send(schedule);
   } catch (error) {
-    console.error("Error in getAll schedules:", error);
+    console.error("Error in getAll schedule:", error);
     res.status(500).send({ error: "Server error fetching Schedule list." });
   }
 };
@@ -18,7 +18,7 @@ exports.getByID = async (req, res) => {
   try {
     const id = req.params.ScheduleID;
     // Leiame graafiku ja kaasame kõik sellega seotud vahetused
-    const schedule = await db.schedules.findByPk(id, {
+    const schedule = await db.schedule.findByPk(id, {
       include: [{ model: db.shifts, as: "shifts" }],
     });
 
@@ -37,22 +37,23 @@ exports.getByID = async (req, res) => {
 // --------------------------- CREATE ---------------------------
 exports.create = async (req, res) => {
   try {
-    const { Name, StartDate, EndDate } = req.body;
+    const { ScheduleName, StartDate, EndDate } = req.body;
 
-    if (!Name || !StartDate || !EndDate) {
+    if (!ScheduleName || !StartDate || !EndDate) {
       return res.status(400).send({
-        error: "Missing parameters. Name, StartDate and EndDate are required.",
+        error:
+          "Missing parameters. ScheduleName, StartDate and EndDate are required.",
       });
     }
 
     const newSchedule = {
       ScheduleID: uuidv7(),
-      Name,
+      ScheduleName,
       StartDate,
       EndDate,
     };
 
-    const createdSchedule = await db.schedules.create(newSchedule);
+    const createdSchedule = await db.schedule.create(newSchedule);
 
     return res
       .location(
@@ -69,7 +70,7 @@ exports.create = async (req, res) => {
 exports.deleteByID = async (req, res) => {
   try {
     const id = req.params.ScheduleID;
-    const schedule = await db.schedules.findByPk(id);
+    const schedule = await db.schedule.findByPk(id);
 
     if (!schedule) {
       return res.status(404).send({ error: "Schedule not found." });
@@ -87,18 +88,18 @@ exports.deleteByID = async (req, res) => {
 exports.modifyById = async (req, res) => {
   try {
     const id = req.params.ScheduleID;
-    const schedule = await db.schedules.findByPk(id);
+    const schedule = await db.schedule.findByPk(id);
 
     if (!schedule) {
       return res.status(404).send({ error: "Schedule not found." });
     }
 
-    const { Name, StartDate, EndDate } = req.body;
-    if (!Name || !StartDate || !EndDate) {
+    const { ScheduleName, StartDate, EndDate } = req.body;
+    if (!ScheduleName || !StartDate || !EndDate) {
       return res.status(400).send({ error: "Missing parameters for update." });
     }
 
-    schedule.Name = Name;
+    schedule.ScheduleName = ScheduleName;
     schedule.StartDate = StartDate;
     schedule.EndDate = EndDate;
 
