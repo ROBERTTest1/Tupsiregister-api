@@ -25,11 +25,7 @@ exports.getAll = async (req, res) => {
 };
 
 // --------------------------- GET BY ID ---------------------------
-exports.getByID = async (req, res) => {
-  const worker = await getWorker(req, res);
-  if (!worker) return; // getWorker already sent response
-  res.status(200).send(worker);
-};
+
 
 // --------------------------- CREATE ---------------------------
 exports.create = async (req, res) => {
