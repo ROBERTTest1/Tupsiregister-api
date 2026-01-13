@@ -144,10 +144,12 @@ paths:
               type: string
           examples:
             application/json:
-              - StartTime: ""
-                EndTime: ""
-              - StartTime: ""
-                EndTime: ""
+              - ShiftDate: "2026-01-01"
+                StartTime: "11:50:54"
+                EndTime: "12:50:54"
+              - ShiftDate: "2026-01-01"
+                StartTime: "11:50:54"
+                EndTime: "12:50:54"
       summary: Get all the <shift> in API
       description: Return all Shifts that are registered in API
     post:

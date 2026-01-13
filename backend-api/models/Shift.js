@@ -5,6 +5,22 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       defaultValue: DataTypes.UUID,
     },
+    WorkerWorkerID: {
+      type: DataTypes.UUID,
+      allowNull: false,
+      references: {
+        model: "Workers",
+        key: "WorkerID",
+      },
+    },
+    ScheduleScheduleID: {
+      type: DataTypes.UUID,
+      allowNull: false,
+      references: {
+        model: "Schedules",
+        key: "ScheduleID",
+      },
+    },
     ShiftDate: {
       type: DataTypes.DATEONLY,
       allowNull: false,
