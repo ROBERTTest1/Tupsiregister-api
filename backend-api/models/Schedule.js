@@ -3,11 +3,12 @@ module.exports = (sequelize, DataTypes) => {
     ScheduleID: {
       type: DataTypes.UUID,
       primaryKey: true,
-      defaultValue: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
     },
     ScheduleName: {
       type: DataTypes.STRING,
       allowNull: false,
+      field: "Name",
     },
     StartDate: {
       type: DataTypes.DATEONLY,

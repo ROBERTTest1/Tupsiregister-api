@@ -177,7 +177,55 @@ paths:
       summary: Create a new <Shift> into the app
       description: "Creates a new <Shift> instance with its required details, for further usage."
   "/schedule/{ScheduleID}": {}
-  /schedule: {}
+  /schedule:
+    get:
+      tags:
+        - Schedule
+      responses:
+        "200":
+          description: Returns a list of Schedules
+          schema:
+            type: array
+            items:
+              type: string
+          examples:
+            application/json:
+              - ScheduleName: Janauar
+                StartDate: "2026-01-01"
+                EndDate: "2026-01-31"
+              - ScheduleName: Janauar
+                StartDate: "2026-01-01"
+                EndDate: "2026-01-31"
+      summary: Get all the <schedule> in API
+      description: Return all Schedules that are registered in API
+    post:
+      tags:
+        - Schedule
+      parameters:
+        - name: body
+          description: The <Schedule> that is to be created.
+          schema:
+            $ref: "#/definitions/new-Schedule"
+          in: body
+          required: true
+      responses:
+        "201":
+          description: Send 201 when <Schedule> is successfully added to the database
+          schema:
+            type: array
+            items:
+              type: string
+          examples:
+            application/json:
+              ScheduleName: NewScheduleName
+              StartDate: "2026-01-01"
+              EndDate: "2026-01-29"
+        "400":
+          description: "Missing some parameter, please review your request data"
+          schema:
+            $ref: "#/definitions/error"
+      summary: Create a new <Schedule> into the app
+      description: "Creates a new <Worker> instance with its required details, for further usage."
   "/shift/{ShiftID}":
     get:
       tags:
@@ -228,6 +276,13 @@ paths:
     delete:
       tags:
         - Shift
+      parameters:
+        - name: body
+          description: ID of <Shift> to be removed from the app
+          schema:
+            $ref: "#/definitions/delete-Shift"
+          in: body
+          required: true
       responses:
         "204":
           description: Returns  "No content" when removal of <Shift> is sucess
