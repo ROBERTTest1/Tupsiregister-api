@@ -413,8 +413,8 @@ definitions:
         type: string
     example:
       ScheduleName: NewScheduleName
-      StartDate: NewStartDate
-      EndDate: NewEndDate
+      StartDate: "2026-01-01"
+      EndDate: "2026-01-20"
   delete-Schedule:
     description: ""
     required:
