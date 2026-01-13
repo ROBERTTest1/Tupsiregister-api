@@ -173,7 +173,7 @@ paths:
               StartTime: "10:00:00"
               EndTime: "18:00:00"
               WorkerWorkerID: 019bb335-3f37-76b2-995f-798e468bf56f
-              ScheduleScheduleID: 019bb335-3f37-76b2-995f-798e468bf56f
+              ScheduleScheduleID: 00000000-0000-0000-0000-000000000000
       summary: Create a new <Shift> into the app
       description: "Creates a new <Shift> instance with its required details, for further usage."
   "/shift/{ShiftID}":

@@ -1,6 +1,6 @@
 const { db } = require("../db");
 const Utilities = require("./Utilities");
-const { v7: uuidv7 } = require("uuid"); // Standard way to import uuid v7
+const { uuidv7 } = require("uuidv7"); // UUID v7 generaator
 
 // --------------------------- GET ALL ---------------------------
 exports.getAll = async (req, res) => {
@@ -28,40 +28,44 @@ exports.getAll = async (req, res) => {
 // --------------------------- CREATE ---------------------------
 exports.create = async (req, res) => {
   try {
-    // 1. Map incoming names (handles WorkerID or WorkerWorkerID)
+    // 1. Identify IDs (Supports both React-style and DB-style names)
     const WorkerID = req.body.WorkerID || req.body.WorkerWorkerID;
     const ScheduleID = req.body.ScheduleID || req.body.ScheduleScheduleID;
     const { ShiftDate, StartTime, EndTime } = req.body;
 
-    // 2. Validation using the mapped variables
+    // 2. Validation
     if (!WorkerID || !ScheduleID || !ShiftDate || !StartTime || !EndTime) {
       return res.status(400).send({
-        error: "Missing parameters",
-        received: req.body,
+        error:
+          "Missing parameters. WorkerID, ScheduleID, ShiftDate, and Times are required.",
+        received: req.body, // Helps you debug what the frontend sent
       });
     }
 
+    // 3. Prepare the object
     const newShift = {
       ShiftID: uuidv7(),
-      WorkerWorkerID: WorkerID, // Matches your DB column
-      ScheduleScheduleID: ScheduleID, // Matches your DB column
+      WorkerWorkerID: WorkerID, // Column name from your MariaDB
+      ScheduleScheduleID: ScheduleID, // Column name from your MariaDB
       ShiftDate,
       StartTime,
       EndTime,
     };
 
-    // 3. Fixed: Changed db.shifts -> db.shift
+    // 4. Use singular 'db.shift' to match your working Worker controller
     const createdShift = await db.shift.create(newShift);
 
+    // 5. Return success
     return res
       .status(201)
       .location(`${Utilities.getBaseURL(req)}/shift/${createdShift.ShiftID}`)
       .json(createdShift);
   } catch (error) {
     console.error("Error in create shift:", error);
-    res
-      .status(500)
-      .send({ error: "Server error creating Shift.", details: error.message });
+    res.status(500).send({
+      error: "Server error creating Shift.",
+      details: error.message,
+    });
   }
 };
 
