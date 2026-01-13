@@ -1,57 +1,67 @@
 const { db } = require("../db");
 const Utilities = require("./Utilities");
-const { uuidv7 } = require("uuidv7"); // UUID v7 generaator
+const { v7: uuidv7 } = require("uuid"); // Standard way to import uuid v7
 
 // --------------------------- GET ALL ---------------------------
 exports.getAll = async (req, res) => {
   try {
-    // Tavaliselt tahad vahetusi nähes teada ka töötaja nime
-    const shifts = await db.shifts.findAll({
+    // 1. Fixed: Changed db.shifts -> db.shift to match your db.js
+    const shifts = await db.shift.findAll({
       include: [
         {
-          model: db.workers,
-          as: "worker",
+          model: db.worker, // 2. Fixed: Changed db.workers -> db.worker
           attributes: ["FirstName", "LastName"],
         },
       ],
     });
+
     res.status(200).send(shifts);
   } catch (error) {
-    console.error("Error in getAll shifts:", error);
-    res.status(500).send({ error: "Server error fetching Shift list." });
+    console.error("DETAILED ERROR IN GETALL:", error.message);
+    res.status(500).send({
+      error: "Server error fetching Shift list.",
+      details: error.message,
+    });
   }
 };
 
 // --------------------------- CREATE ---------------------------
 exports.create = async (req, res) => {
   try {
-    const { WorkerID, ScheduleID, ShiftDate, StartTime, EndTime } = req.body;
+    // 1. Map incoming names (handles WorkerID or WorkerWorkerID)
+    const WorkerID = req.body.WorkerID || req.body.WorkerWorkerID;
+    const ScheduleID = req.body.ScheduleID || req.body.ScheduleScheduleID;
+    const { ShiftDate, StartTime, EndTime } = req.body;
 
-    // Kontrollime, et kõik vajalikud väljad on olemas
+    // 2. Validation using the mapped variables
     if (!WorkerID || !ScheduleID || !ShiftDate || !StartTime || !EndTime) {
       return res.status(400).send({
-        error:
-          "Missing parameters. WorkerID, ScheduleID, Date and Times are required.",
+        error: "Missing parameters",
+        received: req.body,
       });
     }
 
     const newShift = {
       ShiftID: uuidv7(),
-      WorkerWorkerID,
-      ScheduleScheduleID,
+      WorkerWorkerID: WorkerID, // Matches your DB column
+      ScheduleScheduleID: ScheduleID, // Matches your DB column
       ShiftDate,
       StartTime,
       EndTime,
     };
 
-    const createdShift = await db.shifts.create(newShift);
+    // 3. Fixed: Changed db.shifts -> db.shift
+    const createdShift = await db.shift.create(newShift);
 
     return res
+      .status(201)
       .location(`${Utilities.getBaseURL(req)}/shift/${createdShift.ShiftID}`)
-      .sendStatus(201);
+      .json(createdShift);
   } catch (error) {
     console.error("Error in create shift:", error);
-    res.status(500).send({ error: "Server error creating Shift." });
+    res
+      .status(500)
+      .send({ error: "Server error creating Shift.", details: error.message });
   }
 };
 
@@ -80,8 +90,9 @@ exports.deleteByID = async (req, res) => {
 const getShift = async (req, res) => {
   try {
     const id = req.params.ShiftID;
-    const shift = await db.shifts.findByPk(id, {
-      include: ["worker"], // Võtab kaasa töötaja andmed
+    // Fixed: Changed db.shifts -> db.shift
+    const shift = await db.shift.findByPk(id, {
+      include: [{ model: db.worker }],
     });
 
     if (!shift) {

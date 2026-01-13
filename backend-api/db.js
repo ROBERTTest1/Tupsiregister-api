@@ -35,6 +35,8 @@ db.shift = require("./models/Shift.js")(
 db.worker.belongsToMany(db.schedule, { through: db.shift, as: "WorkerShifts" });
 db.schedule.belongsToMany(db.worker, { through: db.shift });
 
+db.shift.belongsTo(db.worker, { foreignKey: "WorkerWorkerID" });
+
 const sync = async () => {
   try {
     await sequelize.sync();
