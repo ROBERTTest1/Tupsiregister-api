@@ -34,6 +34,10 @@ db.shift = require("./models/Shift.js")(
 
 db.worker.belongsToMany(db.schedule, { through: db.shift, as: "WorkerShifts" });
 db.schedule.belongsToMany(db.worker, { through: db.shift });
+db.schedule.belongsToMany(db.worker, {
+  through: db.shift,
+  as: "ScheduleWorkers",
+});
 
 db.shift.belongsTo(db.worker, { foreignKey: "WorkerWorkerID" });
 

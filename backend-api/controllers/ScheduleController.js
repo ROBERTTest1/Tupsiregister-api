@@ -1,15 +1,18 @@
 const { db } = require("../db");
 const Utilities = require("./Utilities");
-const { uuidv7 } = require("uuidv7"); // UUID v7 generaator
+const { uuidv7 } = require("uuidv7");
 
 // --------------------------- GET ALL ---------------------------
 exports.getAll = async (req, res) => {
   try {
-    const schedule = await db.schedule.findAll();
-    res.status(200).send(schedule);
+    const schedules = await db.schedule.findAll();
+    res.status(200).send(schedules);
   } catch (error) {
     console.error("Error in getAll schedule:", error);
-    res.status(500).send({ error: "Server error fetching Schedule list." });
+    res.status(500).send({
+      error: "Server error fetching Schedule list.",
+      details: error.message,
+    });
   }
 };
 
@@ -17,9 +20,18 @@ exports.getAll = async (req, res) => {
 exports.getByID = async (req, res) => {
   try {
     const id = req.params.ScheduleID;
-    // Leiame graafiku ja kaasame kõik sellega seotud vahetused
+
+    // 1. KASUTA: db.worker (mitte db.shifts)
+    // 2. KASUTA: as: "ScheduleWorkers" (täpselt nagu db.js-is)
     const schedule = await db.schedule.findByPk(id, {
-      include: [{ model: db.shifts, as: "shifts" }],
+      include: [
+        {
+          model: db.worker,
+          as: "ScheduleWorkers",
+          attributes: ["FirstName", "LastName"],
+          through: { attributes: [] }, // Peidab vahetabeli info
+        },
+      ],
     });
 
     if (!schedule) {
@@ -30,7 +42,12 @@ exports.getByID = async (req, res) => {
     res.status(200).send(schedule);
   } catch (error) {
     console.error("Error in getByID schedule:", error);
-    res.status(500).send({ error: "Server error fetching Schedule." });
+    res
+      .status(500)
+      .send({
+        error: "Server error fetching Schedule.",
+        details: error.message,
+      });
   }
 };
 
@@ -56,13 +73,43 @@ exports.create = async (req, res) => {
     const createdSchedule = await db.schedule.create(newSchedule);
 
     return res
+      .status(201)
       .location(
         `${Utilities.getBaseURL(req)}/schedule/${createdSchedule.ScheduleID}`
       )
-      .sendStatus(201);
+      .json(createdSchedule);
   } catch (error) {
     console.error("Error in create schedule:", error);
-    res.status(500).send({ error: "Server error creating Schedule." });
+    res
+      .status(500)
+      .send({
+        error: "Server error creating Schedule.",
+        details: error.message,
+      });
+  }
+};
+
+// --------------------------- MODIFY ---------------------------
+exports.modifyById = async (req, res) => {
+  try {
+    const id = req.params.ScheduleID;
+    const schedule = await db.schedule.findByPk(id);
+
+    if (!schedule) {
+      return res.status(404).send({ error: "Schedule not found." });
+    }
+
+    const { ScheduleName, StartDate, EndDate } = req.body;
+
+    schedule.ScheduleName = ScheduleName || schedule.ScheduleName;
+    schedule.StartDate = StartDate || schedule.StartDate;
+    schedule.EndDate = EndDate || schedule.EndDate;
+
+    await schedule.save();
+    return res.status(200).send(schedule);
+  } catch (error) {
+    console.error("Error in modify schedule:", error);
+    res.status(500).send({ error: "Server error updating Schedule." });
   }
 };
 
@@ -81,36 +128,5 @@ exports.deleteByID = async (req, res) => {
   } catch (error) {
     console.error("Error in delete schedule:", error);
     res.status(500).send({ error: "Server error deleting Schedule." });
-  }
-};
-
-// --------------------------- MODIFY ---------------------------
-exports.modifyById = async (req, res) => {
-  try {
-    const id = req.params.ScheduleID;
-    const schedule = await db.schedule.findByPk(id);
-
-    if (!schedule) {
-      return res.status(404).send({ error: "Schedule not found." });
-    }
-
-    const { ScheduleName, StartDate, EndDate } = req.body;
-    if (!ScheduleName || !StartDate || !EndDate) {
-      return res.status(400).send({ error: "Missing parameters for update." });
-    }
-
-    schedule.ScheduleName = ScheduleName;
-    schedule.StartDate = StartDate;
-    schedule.EndDate = EndDate;
-
-    await schedule.save();
-
-    return res
-      .location(`${Utilities.getBaseURL(req)}/schedule/${schedule.ScheduleID}`)
-      .status(200)
-      .send(schedule);
-  } catch (error) {
-    console.error("Error in modify schedule:", error);
-    res.status(500).send({ error: "Server error updating Schedule." });
   }
 };
