@@ -21,6 +21,7 @@ module.exports = (app) => {
   app
     .route("/shift/:ShiftID")
     .get(ShiftController.getByID)
+    .put(ShiftController.modifyById)
     .delete(ShiftController.deleteByID);
 
   // ------------------ SCHEDULE ROUTES ------------------

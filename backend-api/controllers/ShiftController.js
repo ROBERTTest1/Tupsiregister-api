@@ -76,6 +76,38 @@ exports.getByID = async (req, res) => {
   res.status(200).send(shift);
 };
 
+// --------------------------- MODIFY BY ID ---------------------------
+exports.modifyById = async (req, res) => {
+  try {
+    // 1. Leiame olemasoleva shifti kasutades helperiga
+    const shift = await getShift(req, res);
+    if (!shift) return; // Kui ei leitud, siis getShift juba saatis 404
+
+    // 2. Võtame andmed body-st (toetame mõlemat ID nimekuju)
+    const WorkerID = req.body.WorkerID || req.body.WorkerWorkerID;
+    const ScheduleID = req.body.ScheduleID || req.body.ScheduleScheduleID;
+    const { ShiftDate, StartTime, EndTime } = req.body;
+
+    // 3. Uuendame ainult need väljad, mis kaasa anti (või jätame vanad)
+    shift.WorkerWorkerID = WorkerID || shift.WorkerWorkerID;
+    shift.ScheduleScheduleID = ScheduleID || shift.ScheduleScheduleID;
+    shift.ShiftDate = ShiftDate || shift.ShiftDate;
+    shift.StartTime = StartTime || shift.StartTime;
+    shift.EndTime = EndTime || shift.EndTime;
+
+    // 4. Salvestame muudatused andmebaasi
+    await shift.save();
+
+    // 5. Saadame vastuse
+    res.status(200).send(shift);
+  } catch (error) {
+    console.error("Error in modifyById:", error);
+    res.status(500).send({
+      error: "Server error updating Shift.",
+      details: error.message,
+    });
+  }
+};
 // --------------------------- DELETE ---------------------------
 exports.deleteByID = async (req, res) => {
   try {
