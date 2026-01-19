@@ -33,6 +33,8 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 db.worker = require("./models/Worker.js")(sequelize, DataTypes);
 db.schedule = require("./models/Schedule.js")(sequelize, DataTypes);
+db.user = require("./models/User.js")(sequelize, DataTypes);
+db.users = db.user; // Alias for compatibility
 db.shift = require("./models/Shift.js")(
   sequelize,
   DataTypes,
