@@ -1,4 +1,6 @@
 const { Sequelize, DataTypes } = require("sequelize");
+const session = require('express-session')
+const SequelizeStore = require('connect-session-sequelize')(session.Store)
 
 const sequelize = new Sequelize(
   process.env.DB_DBNAME,
@@ -20,7 +22,13 @@ const testConnection = async () => {
   }
 };
 
+const sessionStore = new SequelizeStore({
+  db: sequelize,
+  tableName: "Sessions"
+})
+
 const db = {};
+
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 db.worker = require("./models/Worker.js")(sequelize, DataTypes);
@@ -43,6 +51,7 @@ db.shift.belongsTo(db.worker, { foreignKey: "WorkerWorkerID" });
 
 const sync = async () => {
   try {
+    await sessionStore.sync()
     await sequelize.sync();
     console.log("Database sync has been completed");
   } catch (err) {
@@ -50,4 +59,4 @@ const sync = async () => {
   }
 };
 
-module.exports = { db, sync, testConnection };
+module.exports = { db, sync, testConnection, sessionStore };

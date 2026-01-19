@@ -31,6 +31,36 @@ exports.getByID = async (req, res) => {
   res.status(200).send(worker);
 };
 
+//-------------------------Get BY EMAIL--------------
+
+exports.getByEmail = 
+async (req, res) => {
+  const user = await getUser(req, res, "ID");
+  if(!user) {return};
+  return res.send(user);
+}
+
+const getUser =
+async (req,res,gtype) => {
+  switch(gtype){
+    case "ID":
+      const userID = req.params.UserID;
+      const user = await db.users.findByPk(userID);
+      if (!user) {
+        res.status(404).send({error:`user by this id does not exist${userID}`})
+        return null;
+      }
+      return user;
+    case "Email":
+      return user;
+      const LoginEmail = req.params.LoginEmail;
+      user = await db.users.findAll(LoginEmail)[0]
+    if (!user) {
+      
+      }
+  }
+}
+
 // --------------------------- CREATE ---------------------------
 exports.create = async (req, res) => {
   try {
