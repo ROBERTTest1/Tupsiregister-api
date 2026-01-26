@@ -174,9 +174,8 @@ paths:
       description: "Creates a new <Shift> instance with its required details, for further usage."
   "/shift/{ShiftID}":
     get:
-      parameters:
-        - name: body
-          in: body
+      tags:
+        - Shift
       responses:
         "200": {}
         "404":
