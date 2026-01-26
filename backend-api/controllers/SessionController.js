@@ -48,6 +48,11 @@ exports.newSession = async (req, res) => {
 // --------------------------- GET CURRENT SESSION ---------------------------
 exports.getCurrentSession = async (req, res) => {
   try {
+    // Check if session exists
+    if (!req.session || !req.session.UserID) {
+      return res.status(401).send({ error: "No active session" });
+    }
+
     const user = await db.users.findByPk(req.session.UserID, {
       attributes: { exclude: ["PasswordHASH"] },
     });

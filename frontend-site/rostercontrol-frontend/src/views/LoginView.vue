@@ -72,7 +72,7 @@ export default {
         // Store user info in auth store
         authStore.setUser(response);
 
-        // Redirect to home page
+        // Redirect to home page - the route change will trigger App.vue to update
         this.$router.push("/");
       } catch (error) {
         this.errorMessage = error.message || "Login failed. Please try again.";

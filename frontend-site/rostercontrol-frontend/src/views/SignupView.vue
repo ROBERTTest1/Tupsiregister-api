@@ -78,7 +78,6 @@
 
 <script>
 import { apiService } from "../services/apiService";
-import { authStore } from "../store/auth";
 
 export default {
   name: "SignupView",

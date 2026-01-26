@@ -1,49 +1,56 @@
-// Simple auth store to manage user state
-let currentUser = null;
+import { reactive } from "vue";
+
+// Simple auth store to manage user state - using Vue reactivity
+const state = reactive({
+  currentUser: null,
+});
 
 export const authStore = {
-  // Load user from localStorage on init
+  // Don't load from localStorage automatically - wait for backend verification
   init() {
-    const stored = localStorage.getItem("user");
-    if (stored) {
-      try {
-        currentUser = JSON.parse(stored);
-      } catch (e) {
-        console.error("Error parsing stored user:", e);
-        localStorage.removeItem("user");
-      }
-    }
+    // Don't load from localStorage here - we'll verify with backend first
+    // This prevents showing stale login state on page load
+    state.currentUser = null;
   },
 
   // Set current user
   setUser(user) {
-    currentUser = user;
+    state.currentUser = user;
     if (user) {
       localStorage.setItem("user", JSON.stringify(user));
     } else {
       localStorage.removeItem("user");
     }
+    // Dispatch event for components that might be listening
+    window.dispatchEvent(new Event("auth-change"));
   },
 
   // Get current user
   getUser() {
-    return currentUser;
+    return state.currentUser;
   },
 
   // Check if user is authenticated
   isAuthenticated() {
-    return currentUser !== null;
+    return state.currentUser !== null;
   },
 
   // Check if user is admin
   isAdmin() {
-    return currentUser && currentUser.IsAdmin === true;
+    return state.currentUser && state.currentUser.IsAdmin === true;
   },
 
   // Clear user (logout)
   clearUser() {
-    currentUser = null;
+    state.currentUser = null;
     localStorage.removeItem("user");
+    // Dispatch event for components that might be listening
+    window.dispatchEvent(new Event("auth-change"));
+  },
+
+  // Get the reactive state (for direct access in components)
+  getState() {
+    return state;
   },
 };
 
