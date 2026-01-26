@@ -98,8 +98,6 @@ paths:
           examples:
             application/json:
               - error: Worker not found
-      summary: Modify a worker by WorkerID
-      description: ""
     delete:
       tags:
         - Worker
@@ -146,12 +144,10 @@ paths:
               type: string
           examples:
             application/json:
-              - ShiftDate: "2026-01-01"
-                StartTime: "11:50:54"
-                EndTime: "12:50:54"
-              - ShiftDate: "2026-01-01"
-                StartTime: "11:50:54"
-                EndTime: "12:50:54"
+              - StartTime: ""
+                EndTime: ""
+              - StartTime: ""
+                EndTime: ""
       summary: Get all the <shift> in API
       description: Return all Shifts that are registered in API
     post:
@@ -174,151 +170,18 @@ paths:
               ShiftDate: "2000-01-31"
               StartTime: "10:00:00"
               EndTime: "18:00:00"
-              WorkerWorkerID: 019bb335-3f37-76b2-995f-798e468bf56f
-              ScheduleScheduleID: 00000000-0000-0000-0000-000000000000
       summary: Create a new <Shift> into the app
       description: "Creates a new <Shift> instance with its required details, for further usage."
-  "/schedule/{ScheduleID}":
-    get:
-      tags:
-        - Schedule
-      responses:
-        "200": {}
-        "404":
-          schema:
-            $ref: "#/definitions/error"
-      operationId: ScheduleID
-      summary: Get the full details of a Schedule
-      description: Will return all details of a given <Schedule> based on ScheduleID given.
-    put:
-      tags:
-        - Schedule
-      parameters:
-        - name: body
-          description: Contains new data to be changed in the specified Schedule
-          schema:
-            $ref: "#/definitions/new-Schedule"
-          in: body
-          required: true
-      responses:
-        "201":
-          description: |
-            Returns 201 upon successful modification of Worker
-          schema:
-            $ref: "#/definitions/new-Schedule"
-          examples:
-            application/json:
-              - ScheduleName: 3g
-                StartDate: "2026-02-01"
-                EndDate: "2026-03-02"
-        "400":
-          description: Returns 400 when one or multiple required parmeters are missing
-          schema:
-            $ref: "#/definitions/error"
-          examples:
-            application/json:
-              - error: "cannot change info, because some parameter missing."
-        "404":
-          description: "Returns 404 when Schedule that is to be modified, is not found by the given ScheduleID"
-          schema:
-            $ref: "#/definitions/error"
-          examples:
-            application/json:
-              - error: Worker not found
-      summary: Modify a Schedule by ScheduleID
-    delete:
-      tags:
-        - Schedule
-      parameters:
-        - name: body
-          description: ID of <Schedule> to be removed from the app
-          schema:
-            $ref: "#/definitions/delete-Schedule"
-          in: body
-          required: true
-      responses:
-        "204":
-          description: Returns  "No content" when removal of <Schedule> is sucess
-          schema:
-            $ref: "#/definitions/error"
-          examples:
-            application/json:
-              - error: No Content
-        "404":
-          description: "Returns error, when <Schedule> with specified ID does not exist"
-          schema:
-            $ref: "#/definitions/error"
-          examples:
-            application/json:
-              - error: ID not found
-      operationId: ScheduleID
-      summary: Delete a <Schedule> from the app
-      description: Deletes an entry from the app
-    parameters:
-      - name: ScheduleID
-        description: ID of Schedule
-        in: path
-        required: true
-        type: string
-  /schedule:
-    get:
-      tags:
-        - Schedule
-      responses:
-        "200":
-          description: Returns a list of Schedules
-          schema:
-            type: array
-            items:
-              type: string
-          examples:
-            application/json:
-              - ScheduleName: Janauar
-                StartDate: "2026-01-01"
-                EndDate: "2026-01-31"
-              - ScheduleName: Janauar
-                StartDate: "2026-01-01"
-                EndDate: "2026-01-31"
-      summary: Get all the <schedule> in API
-      description: Return all Schedules that are registered in API
-    post:
-      tags:
-        - Schedule
-      parameters:
-        - name: body
-          description: The <Schedule> that is to be created.
-          schema:
-            $ref: "#/definitions/new-Schedule"
-          in: body
-          required: true
-      responses:
-        "201":
-          description: Send 201 when <Schedule> is successfully added to the database
-          schema:
-            type: array
-            items:
-              type: string
-          examples:
-            application/json:
-              ScheduleName: NewScheduleName
-              StartDate: "2026-01-01"
-              EndDate: "2026-01-29"
-        "400":
-          description: "Missing some parameter, please review your request data"
-          schema:
-            $ref: "#/definitions/error"
-      summary: Create a new <Schedule> into the app
-      description: "Creates a new <Worker> instance with its required details, for further usage."
   "/shift/{ShiftID}":
     get:
-      tags:
-        - Shift
+      parameters:
+        - name: body
+          in: body
       responses:
         "200": {}
         "404":
           schema:
             $ref: "#/definitions/error"
-      operationId: ShiftID
       summary: Get the full details of a Shift
       description: Will return all details of a given <Shift> based on ShiftID given.
     put:
@@ -326,7 +189,7 @@ paths:
         - Shift
       parameters:
         - name: body
-          description: Contains new data to be changed in the specified Shift
+          description: Contains new data to be changed in the specified Worker
           schema:
             $ref: "#/definitions/new-Shift"
           in: body
@@ -356,17 +219,9 @@ paths:
           examples:
             application/json:
               - error: Shift not found
-      summary: Modify a Shift by ShiftID
     delete:
       tags:
         - Shift
-      parameters:
-        - name: body
-          description: ID of <Shift> to be removed from the app
-          schema:
-            $ref: "#/definitions/delete-Shift"
-          in: body
-          required: true
       responses:
         "204":
           description: Returns  "No content" when removal of <Shift> is sucess
@@ -382,7 +237,6 @@ paths:
           examples:
             application/json:
               - error: ID not found
-      summary: Delete a Shift by ShiftID
       description: Deletes an entry from the app
     parameters:
       - name: ShiftID
@@ -390,6 +244,53 @@ paths:
         in: path
         required: true
         type: string
+  "/schedule/{ScheduleID}": {}
+  /schedule: {}
+  /sessions:
+    post:
+      tags:
+        - Users
+        - Auth
+      parameters:
+        - name: body
+          description: Data of the user
+          schema:
+            $ref: "#/definitions/login-User"
+          in: body
+          required: true
+      responses:
+        "200":
+          description: Returns selected user data for site functioning
+          schema:
+            $ref: "#/definitions/loggedin-User"
+          examples:
+            application/json:
+              - UserID: ""
+                DisplayName: "1"
+                EmailAddress: w
+                IsAdmin: false
+        "400":
+          description: Returns bad request when parameters are missing
+          schema:
+            $ref: "#/definitions/error"
+          examples:
+            application/json:
+              - error: Missing parameter for logging in
+        "401":
+          description: Returns 401 Unauthorized when incorrect data is inserted.
+          schema:
+            $ref: "#/definitions/error"
+          examples:
+            application/json:
+              - error: Password mismatch
+        "404":
+          description: Returns 404 error when user is not found
+          schema:
+            $ref: "#/definitions/error"
+          examples:
+            application/json:
+              - error: User not found
+      summary: Make session get cookie
 definitions:
   error:
     title: Root Type for error
@@ -443,8 +344,6 @@ definitions:
       - ShiftDate
       - StartTime
       - EndTime
-      - WorkerWorkerID
-      - ScheduleScheduleID
     type: object
     properties:
       ShiftDate:
@@ -456,18 +355,10 @@ definitions:
       EndTime:
         description: ""
         type: string
-      WorkerWorkerID:
-        description: ""
-        type: string
-      ScheduleScheduleID:
-        description: ""
-        type: string
     example:
-      ShiftDate: "2000-01-31"
-      StartTime: "10:00:00"
-      EndTime: "18:00:00"
-      WorkerWorkerID: 019bb335-3f37-76b2-995f-798e468bf56f
-      ScheduleScheduleID: 00000000-0000-0000-0000-000000000000
+      ShiftDate: NewShiftDate
+      StartTime: NewStartTime
+      EndTime: NewEndTime
   delete-Shift:
     description: ""
     required:
@@ -498,8 +389,8 @@ definitions:
         type: string
     example:
       ScheduleName: NewScheduleName
-      StartDate: "2026-01-01"
-      EndDate: "2026-01-20"
+      StartDate: NewStartDate
+      EndDate: NewEndDate
   delete-Schedule:
     description: ""
     required:
@@ -511,3 +402,33 @@ definitions:
         type: string
     example:
       ScheduleID: 5f9b9e90-cec3-11f0-b43f-901b0eec5991
+  login-User:
+    title: Root Type for login-User
+    description: Data that the User provides upon an attempt to login
+    type: object
+    properties:
+      LoginEmail:
+        type: string
+      LoginPassword:
+        type: string
+    example:
+      LoginEmail: asfa
+      LoginPassword: "1244"
+  loggedin-User:
+    title: Root Type for loggedin-User
+    description: "Data of the user, that is returned upon successful new session, or reauthenticating old session"
+    type: object
+    properties:
+      UserID:
+        type: string
+      DisplayName:
+        type: string
+      EmailAddress:
+        type: string
+      IsAdmin:
+        type: boolean
+    example:
+      UserID: 111231saf-12312 jne
+      DisplayName: aff
+      EmailAddress: a@afa.com
+      IsAdmin: false
