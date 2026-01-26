@@ -78,3 +78,25 @@ exports.getByID = async (req, res) => {
     res.status(500).send({ error: "Server error fetching user." });
   }
 };
+
+// --------------------------- GET USER BY EMAIL ---------------------------
+exports.getByEmail = async (req, res) => {
+  try {
+    const email = req.params.EmailAddress;
+    const user = await db.users.findOne({
+      where: { EmailAddress: email },
+      attributes: { exclude: ["PasswordHASH"] }, // Don't send password
+    });
+
+    if (!user) {
+      return res
+        .status(404)
+        .send({ error: `User with email ${email} was not found.` });
+    }
+
+    res.status(200).send(user);
+  } catch (error) {
+    console.error("Error in getByEmail user:", error);
+    res.status(500).send({ error: "Server error fetching user." });
+  }
+};
