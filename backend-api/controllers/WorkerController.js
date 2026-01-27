@@ -36,7 +36,13 @@ exports.create = async (req, res) => {
   try {
     const { FirstName, LastName, Workload, IsActive, RoleName } = req.body;
 
-    if (!FirstName || !LastName || !Workload || !IsActive || !RoleName) {
+    if (
+      !FirstName ||
+      !LastName ||
+      !Workload ||
+      (IsActive !== true && IsActive !== false) ||
+      !RoleName
+    ) {
       return res.status(400).send({
         error: "Missing some parameter, please review your request data.",
       });
@@ -85,7 +91,7 @@ exports.modifyById = async (req, res) => {
     !req.body.FirstName ||
     !req.body.LastName ||
     !req.body.Workload ||
-    !req.body.IsActive ||
+    (req.body.IsActive !== true && req.body.IsActive !== false) ||
     !req.body.RoleName
   ) {
     return res.status(400).send({
