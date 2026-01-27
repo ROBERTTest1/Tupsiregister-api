@@ -14,7 +14,6 @@
           <tr>
             <th>Name</th>
             <th>Role</th>
-            <th>Workload</th>
             <th>Active</th>
           </tr>
         </thead>
@@ -22,7 +21,6 @@
           <tr v-for="worker in workers" :key="worker.WorkerID">
             <td>{{ worker.FirstName }} {{ worker.LastName }}</td>
             <td>{{ worker.RoleName || "—" }}</td>
-            <td>{{ worker.Workload != null ? worker.Workload : "—" }}</td>
             <td>
               <span
                 :class="[
