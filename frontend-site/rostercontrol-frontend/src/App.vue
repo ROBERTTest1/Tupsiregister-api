@@ -25,6 +25,7 @@
         <router-link to="/signup">Sign Up</router-link> |
       </template>
       <template v-else>
+        <router-link to="/workers">Workers</router-link> |
         <a href="#" @click.prevent="handleLogout">Logout</a> |
       </template>
       <router-link to="/about">About</router-link>

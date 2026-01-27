@@ -13,6 +13,7 @@ module.exports = (app) => {
 
   // ------------------ USER ROUTES ------------------
   app.route("/user").post(UserController.create); // Public - anyone can sign up
+  app.route("/user/email/:EmailAddress").get(requireAuth, UserController.getByEmail); // Auth required
   app.route("/user/:UserID").get(requireAuth, UserController.getByID); // Auth required
 
   // ------------------ WORKER ROUTES ------------------
