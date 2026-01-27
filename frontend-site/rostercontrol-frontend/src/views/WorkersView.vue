@@ -205,11 +205,9 @@ export default {
         FirstName: worker.FirstName,
         LastName: worker.LastName,
         RoleName: worker.RoleName || "",
-        Workload:
-          worker.Workload != null && worker.Workload !== ""
-            ? Number(worker.Workload)
-            : 0,
-        IsActive: !!worker.IsActive,
+        Workload: worker.Workload, // Keep as is, the input type="number" handles it
+        // Check if the string is exactly "true"
+        IsActive: worker.IsActive === "true" || worker.IsActive === true,
       };
       this.formError = "";
       this.showForm = true;
@@ -222,13 +220,17 @@ export default {
     async submitWorkerForm() {
       this.formError = "";
       this.formSaving = true;
+
       const payload = {
         FirstName: this.form.FirstName.trim(),
         LastName: this.form.LastName.trim(),
         RoleName: this.form.RoleName.trim(),
-        Workload: Number(this.form.Workload),
-        IsActive: !!this.form.IsActive,
+        // Convert to String so the backend validator ( !Workload ) passes
+        Workload: String(this.form.Workload),
+        // Convert to string "true" or "false" to match ( IsActive !== "true" )
+        IsActive: String(this.form.IsActive),
       };
+
       try {
         if (this.editingWorkerId) {
           await apiService.updateWorker(this.editingWorkerId, payload);

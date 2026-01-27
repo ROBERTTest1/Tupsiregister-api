@@ -40,7 +40,7 @@ exports.create = async (req, res) => {
       !FirstName ||
       !LastName ||
       !Workload ||
-      (IsActive !== true && IsActive !== false) ||
+      (IsActive !== "true" && IsActive !== "false") ||
       !RoleName
     ) {
       return res.status(400).send({

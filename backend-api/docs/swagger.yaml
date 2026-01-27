@@ -43,6 +43,7 @@ paths:
               LastName: NewLastName
               Workload: NewWorkload
               IsActive: NewIsActive
+              RoleName: NewWorkload
         "400":
           description: "Missing some parameter, please review your request data"
           schema:
@@ -335,7 +336,7 @@ definitions:
       FirstName: NewFirstName
       LastName: NewLastName
       Workload: NewWorkload
-      IsActive: NewIsActive
+      IsActive: "true"
       RoleName: NewRoleName
   new-Shift:
     description: ""
