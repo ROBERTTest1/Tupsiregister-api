@@ -55,8 +55,10 @@ paths:
       tags:
         - Worker
       responses:
-        "200": {}
+        "200":
+          description: Return details of Worker
         "404":
+          description: Worker with this ID not found
           schema:
             $ref: "#/definitions/error"
       operationId: WorkerID
@@ -244,8 +246,39 @@ paths:
         in: path
         required: true
         type: string
-  "/schedule/{ScheduleID}": {}
-  /schedule: {}
+  /schedule:
+    get:
+      tags:
+        - Schedule
+      responses:
+        "200":
+          description: Returns a list of Schedules
+          schema:
+            type: string
+          examples:
+            application/json: "                ScheduleName: Janauar\r\n                StartDate: \"2026-01-01\"\r\n                EndDate: \"2026-01-31\"\r\n              - ScheduleName: Janauar\r\n                StartDate: \"2026-01-01\"\r\n                EndDate: \"2026-01-31\"\r\n"
+      summary: Get all the <schedule> in API
+      description: Return all Schedules that are registered in API
+    post:
+      tags:
+        - Schedule
+      responses:
+        "201":
+          description: "Send 201 when <Schedule> is successfully added to the database\r\n"
+          schema:
+            type: array
+            items:
+              type: string
+          examples:
+            application/json: "              ScheduleName: NewScheduleName\r\n              StartDate: \"2026-01-01\"\r\n              EndDate: \"2026-01-29"
+        "400":
+          description: "Missing some parameter, please review your request data"
+          schema:
+            $ref: "#/definitions/error"
+          examples:
+            application/json:
+              - error: ""
+      description: The <Schedule> that is to be created.
   /sessions:
     post:
       tags:
@@ -291,6 +324,74 @@ paths:
             application/json:
               - error: User not found
       summary: Make session get cookie
+  "/schedule/{ScheduleID}":
+    get:
+      tags:
+        - Schedule
+      responses:
+        "200":
+          description: 200 for getting all the details of the Schedule
+          schema:
+            $ref: "#/definitions/new-Schedule"
+        "404":
+          description: Schedule with given ID not found
+          schema:
+            $ref: "#/definitions/error"
+          examples:
+            application/json:
+              - error: "0"
+      operationId: ScheduleID
+      summary: Get the full details of a Schedule
+      description: Will return all details of a given <Schedule> based on ScheduleID given.
+    put:
+      tags:
+        - Schedule
+      responses:
+        "201":
+          description: "Returns 201 upon successful modification of Schedule\r\n"
+          schema:
+            $ref: "#/definitions/new-Schedule"
+          examples:
+            application/json: "\r\n              - ScheduleName: 3g\r\n                StartDate: \"2026-02-01\"\r\n                EndDate: \"2026-03-02\"\r\n"
+        "400":
+          description: "Returns 400 when one or multiple required parmeters are missing\r\n"
+          schema:
+            $ref: "#/definitions/error"
+          examples:
+            application/json: "error: \"cannot change info, because some parameter missing.\"\r\n"
+        "404":
+          description: "Returns 404 when Schedule that is to be modified, is not found by the given ScheduleID"
+          schema:
+            $ref: "#/definitions/error"
+          examples:
+            application/json: "application/json:\r\n  error: \"Schedule not found\""
+      operationId: ScheduleID
+      description: Contains new data to be changed in the specified Schedule
+    delete:
+      tags:
+        - Schedule
+      responses:
+        "204":
+          description: Returns  "No content" when removal of <Schedule> is success
+          schema:
+            $ref: "#/definitions/delete-Schedule"
+          examples:
+            application/json: "error: No Content\r\n"
+        "404":
+          description: "Returns error, when <Schedule> with specified ID does not exist"
+          schema:
+            $ref: "#/definitions/delete-Schedule"
+          examples:
+            application/json: "error: ID not found\r\n"
+      operationId: ScheduleID
+      summary: Delete a <Schedule> from the app
+      description: Deletes an entry from the app
+    parameters:
+      - name: ScheduleID
+        description: ID of Schedule
+        in: path
+        required: true
+        type: string
 definitions:
   error:
     title: Root Type for error
